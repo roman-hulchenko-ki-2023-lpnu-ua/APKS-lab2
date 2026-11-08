@@ -73,7 +73,7 @@ begin
         wait for 20 ns;
 
         -- Тест 1: Запис даних (Master -> Slave)
-        enable_sig <= '1';
+        enable_sig <= '1';       -- test 
         rw_sig <= '0'; -- Запис
         wait for clk_period;
         enable_sig <= '0'; -- Знімаємо enable, транзакція вже почалася
@@ -89,4 +89,4 @@ begin
         assert false report "Simulation Finished" severity failure;
     end process;
 
-end architecture sim; 
+end architecture sim;
