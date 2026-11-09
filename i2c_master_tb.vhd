@@ -32,8 +32,8 @@ architecture sim of i2c_master_tb is
     signal busy_sig      : std_logic;
     signal data_rd_sig   : std_logic_vector(7 downto 0);
     signal ack_error_sig : std_logic;
-    signal sda_sig       : std_logic;
-    signal scl_sig       : std_logic;
+    signal sda_sig        : std_logic := 'H';
+    signal scl_sig        : std_logic := 'H';
 
     constant clk_period : time := 10 ns;
 
@@ -78,11 +78,11 @@ begin
         wait for clk_period;
         enable_sig <= '0'; -- Знімаємо enable, транзакція вже почалася
 
-        -- Імітація відповіді Slave (підтягуємо SDA до '0' для ACK)
-        wait for 200 ns; -- Затримка, щоб дочекатися стану SLAVE_ACK
+-- Імітація відповіді Slave (підтягуємо SDA до '0' для ACK)
+        wait for 180 ns; -- Змінено: чекаємо 180 нс до моменту SLAVE_ACK
         sda_sig <= '0';  -- Імітуємо ACK від Slave
-        wait for 20 ns;
-        sda_sig <= 'Z';  -- Відпускаємо лінію
+        wait for 40 ns;  -- Змінено: тримаємо ACK достатньо довго (2 такти)
+        sda_sig <= 'H';  -- Відпускаємо лінію
 
         -- Завершення тесту
         wait for 500 ns;
