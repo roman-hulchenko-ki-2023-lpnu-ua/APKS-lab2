@@ -8,7 +8,7 @@ architecture rtl of i2c_master is
     signal sda_out  : std_logic := '1'; 
     signal scl_out  : std_logic := '1'; 
     
-    -- НОВИЙ СИГНАЛ: фаза для генерації SCL (0 - SCL падає, 1 - SCL піднімається)
+    -- НОВИЙ СИГНАЛ: фаза для генерації SCL. (0 - SCL падає, 1 - SCL піднімається)
     signal phase    : integer range 0 to 1 := 0; 
 
 begin
