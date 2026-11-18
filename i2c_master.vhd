@@ -1,3 +1,23 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity i2c_master is
+    port (
+        clk         : in  std_logic;
+        reset_n     : in  std_logic;
+        enable      : in  std_logic;
+        rw          : in  std_logic; -- '0' для запису, '1' для читання
+        addr        : in  std_logic_vector(6 downto 0);
+        data_wr     : in  std_logic_vector(7 downto 0);
+        busy        : out std_logic;
+        data_rd     : out std_logic_vector(7 downto 0);
+        ack_error   : out std_logic;
+        sda         : inout std_logic;
+        scl         : inout std_logic
+    );
+end entity i2c_master;
+
 architecture rtl of i2c_master is
     type state_type is (IDLE, START, ADDRESS, SLAVE_ACK, DATA, MASTER_ACK, STOP);
     signal state : state_type := IDLE;
@@ -8,7 +28,7 @@ architecture rtl of i2c_master is
     signal sda_out  : std_logic := '1'; 
     signal scl_out  : std_logic := '1'; 
     
-    -- НОВИЙ СИГНАЛ: фаза для генерації SCL (0 - SCL падає, 1 - SCL піднімається)
+    -- Сигнал фази для генерації SCL (0 - SCL падає, 1 - SCL піднімається)
     signal phase    : integer range 0 to 1 := 0; 
 
 begin
@@ -23,7 +43,7 @@ begin
             ack_error <= '0';
             sda_out <= '1';
             scl_out <= '1';
-            phase <= 0; -- Скидання фази
+            phase <= 0;
         elsif rising_edge(clk) then
             case state is
                 
