@@ -5,7 +5,6 @@ entity i2c_master_tb is
 end entity i2c_master_tb;
 
 architecture sim of i2c_master_tb is
-    -- Компонент, який ми тестуємо
     component i2c_master is
         port (
             clk       : in    std_logic;
@@ -38,7 +37,7 @@ architecture sim of i2c_master_tb is
     constant clk_period : time := 10 ns;
 
 begin
-    -- Підключення тестованого модуля (Device Under Test)
+    -- Підключення тестованого модуля 
     DUT: i2c_master
         port map (
             clk       => clk_sig,
@@ -79,9 +78,9 @@ begin
         enable_sig <= '0'; -- Знімаємо enable, транзакція вже почалася
 
 -- Імітація відповіді Slave (підтягуємо SDA до '0' для ACK)
-        wait for 180 ns; -- Змінено: чекаємо 180 нс до моменту SLAVE_ACK
+        wait for 180 ns; -- чекаємо 180 нс до моменту SLAVE_ACK
         sda_sig <= '0';  -- Імітуємо ACK від Slave
-        wait for 40 ns;  -- Змінено: тримаємо ACK достатньо довго (2 такти)
+        wait for 40 ns;  -- тримаємо ACK достатньо довго (2 такти)
         sda_sig <= 'H';  -- Відпускаємо лінію
 
         -- Завершення тесту
